@@ -1,6 +1,0 @@
-C:\Users\admin\Desktop\SteamAchievementManager-962f2128cb29e0993253c0c4f6b1fe766a1f249b\SAM.API\bin\Debug\SAM.API.dll
-C:\Users\admin\Desktop\SteamAchievementManager-962f2128cb29e0993253c0c4f6b1fe766a1f249b\SAM.API\bin\Debug\SAM.API.pdb
-C:\Users\admin\Desktop\SteamAchievementManager-962f2128cb29e0993253c0c4f6b1fe766a1f249b\SAM.API\obj\Debug\SAM.API.csprojAssemblyReference.cache
-C:\Users\admin\Desktop\SteamAchievementManager-962f2128cb29e0993253c0c4f6b1fe766a1f249b\SAM.API\obj\Debug\SAM.API.csproj.CoreCompileInputs.cache
-C:\Users\admin\Desktop\SteamAchievementManager-962f2128cb29e0993253c0c4f6b1fe766a1f249b\SAM.API\obj\Debug\SAM.API.dll
-C:\Users\admin\Desktop\SteamAchievementManager-962f2128cb29e0993253c0c4f6b1fe766a1f249b\SAM.API\obj\Debug\SAM.API.pdb
