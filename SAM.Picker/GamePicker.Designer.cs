@@ -36,7 +36,8 @@
             this._CallbackTimer = new System.Windows.Forms.Timer(this.components);
             this._PickerToolStrip = new System.Windows.Forms.ToolStrip();
             this._RefreshGamesButton = new System.Windows.Forms.ToolStripButton();
-            this.unlockAllGames = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.lockAllGames = new System.Windows.Forms.ToolStripButton();
             this._AddGameTextBox = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this._FilterDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
@@ -82,7 +83,8 @@
             // 
             this._PickerToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._RefreshGamesButton,
-            this.unlockAllGames,
+            this.toolStripButton2,
+            this.lockAllGames,
             _ToolStripSeparator1,
             this._AddGameTextBox,
             this.toolStripButton1,
@@ -103,15 +105,24 @@
             this._RefreshGamesButton.Text = "Refresh Games";
             this._RefreshGamesButton.Click += new System.EventHandler(this.OnRefresh);
             // 
-            // unlockAllGames
+            // toolStripButton2
             // 
-            this.unlockAllGames.Enabled = false;
-            this.unlockAllGames.Image = global::SAM.Picker.Properties.Resources.lock_unlock;
-            this.unlockAllGames.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.unlockAllGames.Name = "unlockAllGames";
-            this.unlockAllGames.Size = new System.Drawing.Size(81, 22);
-            this.unlockAllGames.Text = "Unlock All";
-            this.unlockAllGames.Click += new System.EventHandler(this.unlockAllGames_Click);
+            this.toolStripButton2.Enabled = false;
+            this.toolStripButton2.Image = global::SAM.Picker.Properties.Resources.lock_unlock;
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(81, 22);
+            this.toolStripButton2.Text = "Unlock All";
+            this.toolStripButton2.Click += new System.EventHandler( this.unlockAllGames_Click );
+            // 
+            // lockAllGames
+            // 
+            this.lockAllGames.Enabled = false;
+            this.lockAllGames.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.lockAllGames.Name = "lockAllGames";
+            this.lockAllGames.Size = new System.Drawing.Size(53, 22);
+            this.lockAllGames.Text = "Lock All";
+            this.lockAllGames.Click += new System.EventHandler(this.lockAllGames_Click);
             // 
             // _AddGameTextBox
             // 
@@ -281,8 +292,9 @@
         private System.ComponentModel.BackgroundWorker _LogoWorker;
         private System.ComponentModel.BackgroundWorker _ListWorker;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
-        private System.Windows.Forms.ToolStripButton unlockAllGames;
+        private System.Windows.Forms.ToolStripButton lockAllGames;
         private System.Windows.Forms.ToolStripProgressBar unlockAllProgress;
+        private System.Windows.Forms.ToolStripButton toolStripButton2;
     }
 }
 

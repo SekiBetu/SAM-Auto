@@ -54,7 +54,7 @@ namespace SAM.Game
 
         //private API.Callback<APITypes.UserStatsStored> UserStatsStoredCallback;
 
-        public Manager(long gameId, API.Client client, bool isAuto = false)
+        public Manager(long gameId, API.Client client, bool isAuto = false, bool unlock_mode = true)
         {
             this.InitializeComponent();
 
@@ -108,7 +108,11 @@ namespace SAM.Game
 
             if(isAuto)
             {
-                base.Text += " | Automatic Unlock";
+
+                if (unlock_mode)
+                    base.Text += " | Automatic Unlock";
+                else
+                    base.Text += " | Automatic Lock";
 
                 // Disable input
                 _ResetButton.Enabled = false;
@@ -120,10 +124,12 @@ namespace SAM.Game
                 _MainTabControl.Enabled = false;
 
                 isAutomatic = isAuto;
+                isUnlockState = unlock_mode;
             }
         }
 
         public bool isAutomatic { get; private set; }
+        public bool isUnlockState { get; private set; }
 
         private void AddAchievementIcon(Stats.AchievementInfo info, Image icon)
         {
@@ -426,7 +432,10 @@ namespace SAM.Game
                 // Check all.
                 foreach (ListViewItem item in this._AchievementListView.Items)
                 {
-                    item.Checked = true;
+                    if ( isUnlockState )
+                        item.Checked = true;
+                    else
+                        item.Checked = false;
                 }
 
                 if (this._AchievementListView.Items.Count == 0)

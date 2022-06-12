@@ -143,12 +143,15 @@ namespace SAM.Picker
 
             this.RefreshGames();
             this._RefreshGamesButton.Enabled = true;
-            this.unlockAllGames.Enabled = true;
+            this.unlockAllProgress.Enabled = true;
+            this.toolStripButton2.Enabled = true;
+            this.lockAllGames.Enabled = true;
             this.DownloadNextLogo();
         }
 
         private void RefreshGames()
         {
+            this._SelectedGameIndex = -1;
             this._FilteredGames.Clear();
             foreach (var info in this._Games.OrderBy(gi => gi.Name))
             {
@@ -182,6 +185,11 @@ namespace SAM.Picker
                 "Displaying {0} games. Total {1} games.",
                 this._GameListView.Items.Count,
                 this._Games.Count);
+
+            if ( this._GameListView.Items.Count > 0 ) {
+                this._GameListView.Items[ 0 ].Selected = true;
+                this._GameListView.Select( );
+            }
         }
 
         private void OnGameListViewRetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
@@ -332,23 +340,11 @@ namespace SAM.Picker
 
         private void OnSelectGame(object sender, ListViewItemSelectionChangedEventArgs e)
         {
-            if (e.IsSelected == true && e.ItemIndex != this._SelectedGameIndex)
-            {
-                this._SelectedGameIndex = e.ItemIndex;
-            }
-            else if (e.IsSelected == true && e.ItemIndex == this._SelectedGameIndex)
-            {
-                this._SelectedGameIndex = -1;
-            }
+            this._SelectedGameIndex = e.ItemIndex;
         }
 
         private void OnActivateGame(object sender, EventArgs e)
         {
-            if (this._SelectedGameIndex < 0)
-            {
-                return;
-            }
-
             var index = this._SelectedGameIndex;
             if (index < 0 || index >= this._FilteredGames.Count)
             {
@@ -403,6 +399,12 @@ namespace SAM.Picker
                 return;
             }
 
+            while ( this._LogoQueue.TryDequeue( out var logo ) ) {
+                // clear the download queue because we will be showing only one app
+                // TODO: https://github.com/gibbed/SteamAchievementManager/issues/106
+                this._LogosAttempted.Remove( logo.Logo );
+            }
+
             this._AddGameTextBox.Text = "";
             this._Games.Clear();
             this.AddGame(id, "normal");
@@ -422,7 +424,7 @@ namespace SAM.Picker
                 "This will open and close A LOT of windows.\n\nIn your case, it could be " + Games.Count + " windows.\n\nWhile this shouldn't cause a performance drop, it might get annoying if you're trying to do something.\n\nIs this OK?",
                 "Warning",
                 MessageBoxButtons.YesNo,
-                MessageBoxIcon.Error) != DialogResult.No)
+                MessageBoxIcon.Warning) != DialogResult.No)
             {
                 unlockAllProgress.Visible = true;
                 unlockAllProgress.Value = 0;
@@ -433,7 +435,7 @@ namespace SAM.Picker
                     unlockAllProgress.Value++;
                     try
                     {
-                        var process = Process.Start("SAM.Game.exe", Game.Id.ToString(CultureInfo.InvariantCulture) + " auto");
+                        var process = Process.Start("SAM.Game.exe", Game.Id.ToString(CultureInfo.InvariantCulture) + " autoU");
 
                         if (process != null && process.HasExited != true)
                         {
@@ -448,6 +450,38 @@ namespace SAM.Picker
                             "Error",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Error);
+                    }
+                }
+
+                unlockAllProgress.Visible = false;
+            }
+        }
+
+        private void lockAllGames_Click( object sender, EventArgs e ) {
+            if ( MessageBox.Show(
+                "This will open and close A LOT of windows.\n\nIn your case, it could be " + Games.Count + " windows.\n\nWhile this shouldn't cause a performance drop, it might get annoying if you're trying to do something.\n\nIs this OK?",
+                "Warning",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning ) != DialogResult.No ) {
+                unlockAllProgress.Visible = true;
+                unlockAllProgress.Value = 0;
+                unlockAllProgress.Maximum = Games.Count;
+
+                foreach ( var Game in Games ) {
+                    unlockAllProgress.Value++;
+                    try {
+                        var process = Process.Start( "SAM.Game.exe", Game.Id.ToString( CultureInfo.InvariantCulture ) + " autoL" );
+
+                        if ( process != null && process.HasExited != true ) {
+                            process.WaitForExit( );
+                        }
+                    } catch ( Win32Exception ) {
+                        MessageBox.Show(
+                            this,
+                            "Failed to start SAM.Game.exe.",
+                            "Error",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error );
                     }
                 }
 
